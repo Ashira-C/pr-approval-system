@@ -17,7 +17,16 @@ export type Requisition = {
   backendId?: string; status?: 'pending' | 'approved' | 'rejected'; approval?: import('./api').ApprovalStatus;
   requester?: import('./api').Employee;
 }
-export const BUDGET = 130000
+// Hard-coded budget amount per department (no budget catalog endpoint yet).
+// Keys must match employee.department from the backend.
+export const budgetByDepartment: Record<string, number> = {
+  'IT Department': 130000,
+  'HR Department': 85000,
+  'General Administration': 200000,
+  'Purchasing Department': 60000,
+}
+export const DEFAULT_BUDGET = 100000
+export const budgetFor = (department?: string | null): number => (department ? budgetByDepartment[department] : undefined) ?? DEFAULT_BUDGET
 export const DRAFT_KEY = 'current-draft'
 export function emptyItem(): Item {
   return { id: crypto.randomUUID(), budgetCode: '', name: '', brand: '', model: '', detail: '', quantity: '', unit: '', price: '' }

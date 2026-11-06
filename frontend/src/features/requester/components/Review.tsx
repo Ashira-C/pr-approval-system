@@ -1,19 +1,19 @@
-import { activeItems, BUDGET, grandTotal, itemTotal, money } from '../../../model'
+import { activeItems, budgetFor, grandTotal, itemTotal, money } from '../../../model'
 import type { Requisition } from '../../../model'
 import { Icon } from '../../../components/Icon'
 import { getSession } from '../../../api'
 
 export function Review({ value, onRemark, onBack, onSubmit, onPreview, busy, resubmit = false }: { value: Requisition; onRemark: (text: string) => void; onBack: () => void; onSubmit: () => void; onPreview: () => void; busy: boolean; resubmit?: boolean }) {
-  const total = grandTotal(value.items), remaining = BUDGET - total
+  const budget = budgetFor(getSession()?.employee.department), total = grandTotal(value.items), remaining = budget - total
   return <div className="review-grid"><section className="budget-panel bordered-panel"><table className="budget-table"><caption>Budget Control Sheet</caption><tbody>
     <tr><th>Budget Type</th><td colSpan={3}>{value.basic.budgetType}</td></tr><tr><th>Budget Year</th><td colSpan={3} className="number">{new Date(value.createdAt).getFullYear()}</td></tr><tr><th>Budget Status</th><td colSpan={3} className="number">{remaining >= 0 ? 'ON BUDGET' : 'OVER BUDGET'}</td></tr><tr><th>Cost Center</th><td colSpan={3} className="number">TECHNOLOGY DEVELOPMENT</td></tr>
     <tr><th rowSpan={3}>PR</th><th rowSpan={2}>Waiting for PO.</th><th>PR. Pending (B)</th><td className="number">0.00 B</td></tr><tr><th>PR. Approve (C)</th><td className="number">0.00 B</td></tr><tr><th colSpan={2}>Amount of “This order” (D)</th><td className="number">{money(total)} B</td></tr>
-    <tr><th rowSpan={2}>Main</th><th>Budget Code</th><td colSpan={2} className="number budget-code">{value.basic.budgetCode}</td></tr><tr><th>Budget Amount (A)</th><td colSpan={2} className="number">{money(BUDGET)} B</td></tr>
+    <tr><th rowSpan={2}>Main</th><th>Budget Code</th><td colSpan={2} className="number budget-code">{value.basic.budgetCode}</td></tr><tr><th>Budget Amount (A)</th><td colSpan={2} className="number">{money(budget)} B</td></tr>
     <tr><th rowSpan={2}>Sub</th><th>Budget Code</th><td colSpan={2}>—</td></tr><tr><th>Budget Amount</th><td colSpan={2}>—</td></tr>
     <tr className="budget-footer"><th colSpan={3}>Latest accumulate PO. issue (E)</th><td className="number">0.00 B</td></tr><tr className="budget-remain"><th>Budget Remain</th><td colSpan={2}>F = A - (B+C+D+E)</td><td className="number">{money(remaining)} B</td></tr>
   </tbody></table><label className="remark-field review-remark"><span>Remark / หมายเหตุ</span><textarea placeholder="Write your remark . . . ." value={value.remark} onChange={e => onRemark(e.target.value)} /></label>
   </section><div><section className="summary-panel bordered-panel"><h2>PR &amp; Budget Summary</h2><div className={`budget-badge ${remaining < 0 ? 'over-budget' : ''}`}><img src={`${import.meta.env.BASE_URL}figma/budget-check.svg`} alt="" /><div>{remaining >= 0 ? 'ON BUDGET' : 'OVER BUDGET'}<small>{remaining >= 0 ? 'วงเงินเพียงพอ' : 'วงเงินไม่เพียงพอ'}</small></div></div><div className="summary-total"><h3>Grand Total / ยอดรวมสุทธิ</h3><p><strong>{money(total)}</strong> THB</p></div>
-    <dl className="budget-numbers"><div><dt>Budget Amount (A)</dt><dd>{money(BUDGET)} THB</dd></div><div><dt>This Order (D)</dt><dd>{money(total)} THB</dd></div><div><dt>Budget Remain (F)</dt><dd>{money(remaining)} THB</dd></div></dl>
+    <dl className="budget-numbers"><div><dt>Budget Amount (A)</dt><dd>{money(budget)} THB</dd></div><div><dt>This Order (D)</dt><dd>{money(total)} THB</dd></div><div><dt>Budget Remain (F)</dt><dd>{money(remaining)} THB</dd></div></dl>
     <dl className="pr-summary"><div><dt>PR No.</dt><dd>{value.reference || '-'}</dd></div><div><dt>Require Date</dt><dd>{value.basic.requiredDate.split('-').reverse().join('/')}</dd></div><div><dt>Department</dt><dd>{getSession()?.employee.department || '—'}</dd></div><div><dt>Cost Center</dt><dd>26-23-ADM-088</dd></div><div><dt>Requester</dt><dd>{getSession()?.employee.full_name || '—'}</dd></div></dl>
     <div className="tip"><strong>ⓘ Tip / คำแนะนำ</strong><p>กรุณาตรวจสอบรายการสินค้าและเอกสารแนบให้ครบถ้วน ก่อนกด Submit</p></div>
 

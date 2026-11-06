@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
-import { activeItems, basicError, BUDGET, grandTotal, itemError, newRequisition, persistRequisition, readDraft } from '../../../model'
+import { activeItems, basicError, budgetFor, grandTotal, itemError, newRequisition, persistRequisition, readDraft } from '../../../model'
 import type { Requisition } from '../../../model'
 import { Icon } from '../../../components/Icon'
 import { createPr, reservePrNumber, resubmitPr } from '../../../api'
@@ -67,7 +67,7 @@ export function PurchaseRequisitionPage({ employee, editing, onClose, onSignOut,
   async function submit() {
     const message = [1, 2, 3].map(validate).find(Boolean)
     if (message) { setError(message); return }
-    if (grandTotal(value.items) > BUDGET) { setError('This request exceeds the available budget. Reduce the order amount before submitting.'); return }
+    if (grandTotal(value.items) > budgetFor(employee.department)) { setError('This request exceeds the available budget. Reduce the order amount before submitting.'); return }
     setBusy(true); setError('')
     const submitted = { ...value, items: activeItems(value.items) }
     try {

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { Employee, PendingApproval } from '../../../api'
 import type { Requisition } from '../../../model'
-import { BUDGET, grandTotal, money } from '../../../model'
+import { budgetFor, grandTotal, money } from '../../../model'
 import { DesignDialog } from '../../../components/DesignDialog'
 import { PdfFrame, PdfToolbar } from '../../../components/PdfPreview'
 import { usePrPdf } from '../../../components/usePrPdf'
@@ -83,7 +83,7 @@ function RequestInfo({ employee, selected, requisition }: { employee: Employee; 
 
 function RequestSummary({ selected, requisition, budgetOnly }: { selected: PendingApproval | null; requisition: Requisition; budgetOnly: boolean }) {
   const total = grandTotal(requisition.items)
-  return <article className="approval-panel"><h2>{budgetOnly ? 'สรุปงบประมาณ' : 'สรุปข้อมูลคำขอ'}</h2>{!budgetOnly ? <dl><dt>PR No.</dt><dd>{selected?.pr_no}</dd><dt>Require Date</dt><dd>{requisition.basic.requiredDate.split('-').reverse().join('/')}</dd><dt>Purpose</dt><dd>{requisition.basic.purpose || '—'}</dd><dt>Cost Center</dt><dd>{selected?.requester_department || '—'}</dd><dt>Requester</dt><dd>{selected?.requester_name}</dd></dl> : null}<div className="approval-total"><div><small>Grand Total / ยอดรวมสุทธิ</small><strong>{money(total)} THB</strong></div><span className="rounded-md border border-[#8ba69a] bg-[#dce7e1] px-3 py-1 text-xs text-[#315d4b]">{total <= BUDGET ? '✓ อยู่ในงบประมาณ' : 'เกินงบประมาณ'}</span></div>{budgetOnly ? <dl><dt>รหัสงบประมาณ</dt><dd>{requisition.basic.budgetCode || '—'}</dd><dt>งบประมาณคงเหลือ</dt><dd>{money(BUDGET - total)} THB</dd></dl> : null}</article>
+  return <article className="approval-panel"><h2>{budgetOnly ? 'สรุปงบประมาณ' : 'สรุปข้อมูลคำขอ'}</h2>{!budgetOnly ? <dl><dt>PR No.</dt><dd>{selected?.pr_no}</dd><dt>Require Date</dt><dd>{requisition.basic.requiredDate.split('-').reverse().join('/')}</dd><dt>Purpose</dt><dd>{requisition.basic.purpose || '—'}</dd><dt>Cost Center</dt><dd>{selected?.requester_department || '—'}</dd><dt>Requester</dt><dd>{selected?.requester_name}</dd></dl> : null}<div className="approval-total"><div><small>Grand Total / ยอดรวมสุทธิ</small><strong>{money(total)} THB</strong></div><span className="rounded-md border border-[#8ba69a] bg-[#dce7e1] px-3 py-1 text-xs text-[#315d4b]">{total <= budgetFor(selected?.requester_department) ? '✓ อยู่ในงบประมาณ' : 'เกินงบประมาณ'}</span></div>{budgetOnly ? <dl><dt>รหัสงบประมาณ</dt><dd>{requisition.basic.budgetCode || '—'}</dd><dt>งบประมาณคงเหลือ</dt><dd>{money(budgetFor(selected?.requester_department) - total)} THB</dd></dl> : null}</article>
 }
 
 function ApprovalChain({ requisition }: { requisition: Requisition }) {
