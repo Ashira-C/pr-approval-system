@@ -52,7 +52,7 @@ type ApiPr = {
   status: 'pending' | 'approved' | 'rejected'
   created_at: string
   total_amount: number
-  items: Array<{ item_id: string; description: string; qty: number; unit: string | null; unit_price: string }>
+  items: Array<{ item_id: string; description: string; item_name?: string | null; brand?: string | null; model?: string | null; detail?: string | null; qty: number; unit: string | null; unit_price: string }>
   attachments?: Array<{ attachment_id: string; file_type: string; file_path: string; file_name: string | null }>
 }
 
@@ -111,6 +111,15 @@ export async function login(employeeId: string, passcode: string): Promise<Sessi
   return session
 }
 
+// Items saved before name/brand/model/detail had their own columns only have the
+// joined description; a 4-part description is split back into its fields.
+function itemParts(item: ApiPr['items'][number]) {
+  if (item.item_name) return { name: item.item_name, brand: item.brand || '', model: item.model || '', detail: item.detail || '' }
+  const parts = item.description.split(' · ')
+  if (parts.length === 4) return { name: parts[0], brand: parts[1], model: parts[2], detail: parts[3] }
+  return { name: parts[0], brand: '', model: '', detail: parts.slice(1).join(' · ') }
+}
+
 function toRequisition(pr: ApiPr, approval?: ApprovalStatus): Requisition {
   return {
     basic: {
@@ -128,10 +137,7 @@ function toRequisition(pr: ApiPr, approval?: ApprovalStatus): Requisition {
     items: (pr.items || []).map(item => ({
       id: item.item_id,
       budgetCode: pr.budget_code || '',
-      name: item.description,
-      brand: '',
-      model: '',
-      detail: '',
+      ...itemParts(item),
       quantity: String(item.qty),
       unit: item.unit || '',
       price: String(item.unit_price),
@@ -261,6 +267,10 @@ function toPrBody(value: Requisition) {
     vendor_name: value.purchaser,
     items: value.items.map(item => ({
       description: [item.name, item.brand, item.model, item.detail].filter(Boolean).join(' · '),
+      item_name: item.name,
+      brand: item.brand || undefined,
+      model: item.model || undefined,
+      detail: item.detail || undefined,
       qty: Number(item.quantity),
       unit: item.unit,
       unit_price: Number(item.price),

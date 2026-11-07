@@ -2,6 +2,10 @@ export type PrStatus = "pending" | "approved" | "rejected";
 
 export interface PrItemInput {
   description: string;
+  item_name?: string;
+  brand?: string;
+  model?: string;
+  detail?: string;
   qty: number;
   unit?: string;
   unit_price: number;
@@ -50,6 +54,10 @@ export interface PrItemRow {
   item_id: string;
   pr_id: string;
   description: string;
+  item_name?: string | null;
+  brand?: string | null;
+  model?: string | null;
+  detail?: string | null;
   qty: number;
   unit: string | null;
   unit_price: string;
