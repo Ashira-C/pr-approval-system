@@ -30,8 +30,8 @@ export function Auth({ onSignIn }: { onSignIn: (employee: Employee) => void }) {
   const special = mode === 'forgot'
   return <main className="auth-layout">
     <aside className="auth-brand">
-      <div className="company auth-wordmark"><span className="auth-logo-mark"><img src={`${import.meta.env.BASE_URL}figma/requester-logo-top.svg`} alt="" /><img src={`${import.meta.env.BASE_URL}figma/requester-logo-bottom.svg`} alt="" /></span><strong>SA‑PR</strong></div>
-      <div className="brand-title"><h1 lang="th">ระบบอนุมัติ<br />คำสั่งซื้อ</h1><p>PURCHASE REQUISITION<br />APPROVAL SYSTEM</p></div>
+      <div className="company auth-wordmark"><span className="auth-logo-mark"><img src={`${import.meta.env.BASE_URL}figma/requester-logo-top.svg`} alt="" /><img src={`${import.meta.env.BASE_URL}figma/requester-logo-bottom.svg`} alt="" /></span><strong>PRAS</strong></div>
+      <div className="brand-title"><h1 lang="th">ระบบอนุมัติ<br />ใบขอสั่งซื้อสินค้า</h1><p>PURCHASE REQUISITION<br />APPROVAL SYSTEM</p></div>
     </aside>
     <section className="auth-right" aria-label="Account access">
       <div className={`auth-card ${special ? 'special-card' : ''} ${attempts || loading ? 'state-card' : ''}`}>

@@ -28,9 +28,9 @@ export function RequesterHeader({ active, onHome, onMyRequests, onSignOut, searc
 
   return <header className="requester-header h-[84px] rounded-b-md bg-[#e7ebef] text-[#31456c] [font-family:'Noto_Sans_Thai','Bai_Jamjuree',sans-serif] max-[760px]:h-auto">
     <div className="relative mx-auto grid h-[84px] w-[min(1216px,calc(100%_-_48px))] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-6 max-[1050px]:flex max-[1050px]:w-[calc(100%_-_32px)] max-[1050px]:gap-3 max-[760px]:h-auto max-[760px]:min-h-[76px] max-[760px]:flex-wrap max-[760px]:py-4">
-      <button className="flex items-center gap-[10px] border-0 bg-transparent p-0 text-[#222a2d]" type="button" onClick={onHome} aria-label="SA-PR home">
+      <button className="flex items-center gap-[10px] border-0 bg-transparent p-0 text-[#222a2d]" type="button" onClick={onHome} aria-label="PRAS home">
         <span className="flex w-5 flex-col gap-1"><img className="block h-2 w-5" src={asset('requester-logo-top.svg')} alt="" /><img className="block h-2 w-5" src={asset('requester-logo-bottom.svg')} alt="" /></span>
-        <strong className="text-xl leading-8 tracking-[-0.2px]">SA‑PR</strong>
+        <strong className="text-xl leading-8 tracking-[-0.2px]">PRAS</strong>
       </button>
       <div className="flex min-w-0 items-center gap-6 max-[1050px]:contents">
       <nav className="flex shrink-0 items-center justify-center gap-0.5 max-[760px]:order-3 max-[760px]:w-full max-[760px]:overflow-x-auto" aria-label="Requester navigation">

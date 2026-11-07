@@ -21,8 +21,8 @@ export function ApproverHeader({ employee, pendingCount, notificationCount, view
 
   return <header className="approver-header h-[84px] bg-[#f7f6f1] text-[#31456c] max-[760px]:h-auto">
     <div className="relative mx-auto grid h-[84px] w-[min(1216px,calc(100%_-_48px))] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-6 max-[760px]:flex max-[760px]:h-auto max-[760px]:min-h-[76px] max-[760px]:w-[calc(100%_-_32px)] max-[760px]:flex-wrap max-[760px]:gap-3 max-[760px]:py-4">
-      <button className="flex items-center gap-[10px] border-0 bg-transparent p-0 text-[#222a2d]" type="button" onClick={() => onView('dashboard')} aria-label="SA-PR dashboard">
-        <span className="flex w-5 flex-col gap-1"><img className="block h-2 w-5" src={asset('approver-logo-top.svg')} alt="" /><img className="block h-2 w-5" src={asset('approver-logo-bottom.svg')} alt="" /></span><strong className="text-xl leading-8 tracking-[-0.2px]">SA‑PR</strong>
+      <button className="flex items-center gap-[10px] border-0 bg-transparent p-0 text-[#222a2d]" type="button" onClick={() => onView('dashboard')} aria-label="PRAS dashboard">
+        <span className="flex w-5 flex-col gap-1"><img className="block h-2 w-5" src={asset('approver-logo-top.svg')} alt="" /><img className="block h-2 w-5" src={asset('approver-logo-bottom.svg')} alt="" /></span><strong className="text-xl leading-8 tracking-[-0.2px]">PRAS</strong>
       </button>
       <nav className="flex items-center justify-center gap-5 max-[760px]:order-3 max-[760px]:w-full max-[760px]:gap-1 max-[760px]:overflow-x-auto" aria-label="Approver navigation">
         <button className={`${navItem} ${view === 'dashboard' ? 'bg-[#e9eaf0]' : ''}`} type="button" onClick={() => onView('dashboard')}><img className="h-[18px] w-[18px]" src={asset('approver-dashboard.svg')} alt="" />แดชบอร์ด</button>
