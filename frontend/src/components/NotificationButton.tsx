@@ -24,7 +24,9 @@ export function NotificationButton({ count, onClick }: { count: number; onClick?
   useEffect(() => () => window.clearTimeout(timer.current), [])
 
   return <button className={`notification-button ${ring ? 'is-ringing' : ''}`} type="button" aria-label={`${count} notifications`} onClick={onClick}>
-    <Bell key={ring} className="notification-bell" size={20} strokeWidth={1.8} aria-hidden="true" />
-    {count > 0 ? <span key={count} className="notification-count" aria-hidden="true">{count > 99 ? '99+' : count}</span> : null}
+    {/* No remount keys here: swapping the bell's key left a stale <svg> behind (two stacked bells).
+        The ring animation replays from the is-ringing class, which turns off after each ring. */}
+    <Bell className="notification-bell" size={20} strokeWidth={1.8} aria-hidden="true" />
+    {count > 0 ? <span className="notification-count" aria-hidden="true">{count > 99 ? '99+' : count}</span> : null}
   </button>
 }
