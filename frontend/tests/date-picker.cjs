@@ -13,7 +13,7 @@ async function main() {
     page.on('pageerror', error => errors.push(error.message))
     await page.goto('/')
     await page.getByRole('button', { name: 'สร้างคำขอ', exact: true }).click()
-    const input = page.getByLabel('Require Date/วันที่ต้องการของ', { exact: true })
+    const input = page.getByLabel('Require Date/วันที่ต้องการ', { exact: true })
     const trigger = page.getByRole('button', { name: 'Choose required date', exact: true })
     const calendar = page.getByRole('dialog', { name: 'Choose required date', exact: true })
     await input.fill('2026-10-04')
