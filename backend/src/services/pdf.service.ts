@@ -313,7 +313,7 @@ function drawTotalsBlock(doc: Doc, data: PrPdfData, y: number): number {
   return y;
 }
 
-// "SA-PR / IT-001-PR" on the left, "หน้า n" on the right of every page.
+// "PRAS / IT-001-PR" on the left, "หน้า n" on the right of every page.
 function drawFooters(doc: Doc, data: PrPdfData): void {
   const range = doc.bufferedPageRange();
   const style: TextStyle = { size: 8, color: COLOR.muted };
@@ -324,7 +324,7 @@ function drawFooters(doc: Doc, data: PrPdfData): void {
     doc.page.margins.bottom = 0;
 
     const y = doc.page.height - MARGIN + 14;
-    drawLine(doc, `SA-PR / ${data.pr.pr_no}`, MARGIN, y, style);
+    drawLine(doc, `PRAS / ${data.pr.pr_no}`, MARGIN, y, style);
     drawLine(doc, `หน้า ${i - range.start + 1}`, MARGIN, y, { ...style, color: COLOR.text }, {
       width: contentWidth(doc),
       align: "right",
