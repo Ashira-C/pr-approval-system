@@ -114,7 +114,7 @@ async function main() {
     await choose('Main Group/กลุ่มสินค้าหลัก', 'General Adm')
     await choose('Budget Type/ชนิดงบประมาณ', 'Investment Budget')
     await choose('Budget Code/งบประมาณเลขที่', '26-23-ADM-072')
-    await page.getByLabel('Require Date/วันที่ต้องการของ', { exact: true }).fill('2026-10-30')
+    await page.getByLabel('Require Date/วันที่ต้องการ', { exact: true }).fill('2026-10-30')
     await page.getByLabel('Purpose/วัตถุประสงค์', { exact: true }).fill('ทดแทนเครื่องเก่า')
     await page.getByRole('button', { name: 'Next', exact: true }).click(); await capture('create-items-empty')
     assert.equal(await page.getByLabel('Budget Code 1', { exact: true }).innerText(), '26-23-ADM-072')

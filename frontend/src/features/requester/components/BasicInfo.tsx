@@ -17,7 +17,7 @@ export function BasicInfo({ value, onChange }: { value: Info; onChange: (value: 
     {field('job', 'Jobs Name/ชื่องาน')}
     <div className="pr-field"><span className="field-label"><label htmlFor="main-group"><b className="required">*</b>Main Group/กลุ่มสินค้าหลัก</label></span><PolishedSelect id="main-group" ariaLabel="Main Group/กลุ่มสินค้าหลัก" required numbered value={value.mainGroup} options={mainGroups} onChange={mainGroup => change('mainGroup', mainGroup)} /></div>
     <label className="pr-field"><span>Budget Type/ชนิดงบประมาณ</span><PolishedSelect ariaLabel="Budget Type/ชนิดงบประมาณ" required value={value.budgetType} options={budgetTypes} onChange={changeBudgetType} /></label>
-    <div className="pr-field"><span><b className="required">*</b>Require Date/วันที่ต้องการของ</span><DatePicker ariaLabel="Require Date/วันที่ต้องการของ" required value={value.requiredDate} onChange={requiredDate => change('requiredDate', requiredDate)} /></div>
+    <div className="pr-field"><span><b className="required">*</b>Require Date/วันที่ต้องการ</span><DatePicker ariaLabel="Require Date/วันที่ต้องการ" required value={value.requiredDate} onChange={requiredDate => change('requiredDate', requiredDate)} /></div>
     <label className="pr-field"><span>Budget Code/งบประมาณเลขที่</span><PolishedSelect wide ariaLabel="Budget Code/งบประมาณเลขที่" disabled={!value.budgetType} required value={value.budgetCode} placeholder="<กรุณาเลือก>" options={budgetCodes} onChange={changeBudgetCode} /></label>
     {field('purpose', 'Purpose/วัตถุประสงค์')}
     {field('description', 'Budget Description')}

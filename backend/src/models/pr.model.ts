@@ -19,6 +19,7 @@ interface PrListDbRow extends RowDataPacket {
   job_name: string | null;
   purpose: string | null;
   asset_type: string | null;
+  budget_code: string | null;
   vendor_name: string | null;
   status: PrStatus;
   created_at: Date;
@@ -109,12 +110,17 @@ async function insertPrItems(
 
         await connection.execute<ResultSetHeader>(
             `INSERT INTO pr_item (
-        item_id, pr_id, description, qty, unit, unit_price
-      ) VALUES (?, ?, ?, ?, ?, ?)`,
+        item_id, pr_id, description, item_name, brand, model, detail,
+        qty, unit, unit_price
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 itemId,
                 prId,
                 item.description,
+                item.item_name || null,
+                item.brand || null,
+                item.model || null,
+                item.detail || null,
                 item.qty,
                 item.unit ?? null,
                 item.unit_price,
@@ -273,6 +279,7 @@ export async function findPrsByRequester(
         pr.job_name,
         pr.purpose,
         pr.asset_type,
+        pr.budget_code,
         pr.vendor_name,
         pr.status,
         pr.created_at,

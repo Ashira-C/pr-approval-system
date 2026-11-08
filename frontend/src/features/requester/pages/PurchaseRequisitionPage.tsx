@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
-import { activeItems, basicError, budgetFor, grandTotal, itemError, newRequisition, persistRequisition, readDraft } from '../../../model'
+import { activeItems, basicError, budgetFor, emptyItem, grandTotal, itemError, newRequisition, persistRequisition, readDraft } from '../../../model'
 import type { Requisition } from '../../../model'
 import { Icon } from '../../../components/Icon'
 import { createPr, reservePrNumber, resubmitPr } from '../../../api'
@@ -20,7 +20,8 @@ function syncItemBudgetCodes(value: Requisition): Requisition {
 }
 // With `editing`, the form edits a rejected PR and sends it back with the resubmit API.
 export function PurchaseRequisitionPage({ employee, editing, onClose, onSignOut, onSubmitted, onViewRequests, onTrackRequest, onNotifications }: { employee: Employee; editing?: Requisition; onClose: () => void; onSignOut: () => void; onSubmitted: (value: Requisition) => void; onViewRequests: () => void; onTrackRequest: (value: Requisition) => void; onNotifications: () => void }) {
-  const [value, setValue] = useState<Requisition>(() => editing ? syncItemBudgetCodes({ ...editing, step: 1 }) : newRequisition())
+  // Like the create flow, saved items show as rows and a blank row at the end takes the next item.
+  const [value, setValue] = useState<Requisition>(() => editing ? syncItemBudgetCodes({ ...editing, items: [...editing.items, emptyItem()], step: 1 }) : newRequisition())
   const [ready, setReady] = useState(Boolean(editing))
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')

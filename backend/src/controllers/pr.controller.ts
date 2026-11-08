@@ -99,7 +99,12 @@ export function parsePrInput(data: Record<string, unknown>, requesterId: string)
         price <= 9_999_999_999_999.99 &&
         Math.abs(price * 100 - Math.round(price * 100)) < 1e-7 &&
         (row.unit === undefined ||
-          (typeof row.unit === "string" && row.unit.length <= 30))
+          (typeof row.unit === "string" && row.unit.length <= 30)) &&
+        ["item_name", "brand", "model", "detail"].every(
+          (key) =>
+            row[key] === undefined ||
+            (typeof row[key] === "string" && (row[key] as string).length <= 255),
+        )
       );
     })
   ) {

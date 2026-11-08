@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import type { RowDataPacket } from "mysql2";
 import pool from "../config/db";
+import { applyMissingMigrations } from "../config/migrate";
 import { approvePr, rejectPr } from "../services/approval.service";
 import { createPr } from "../services/pr.service";
 import { reservePrNumber } from "../services/pr-number.service";
@@ -19,13 +20,6 @@ import type { PrItemInput } from "../types/pr";
 
 const REQUESTER = "E0020";
 const UPLOAD_DIR = path.resolve(__dirname, "../../uploads");
-const MIGRATIONS = [
-  { table: "pr_number_counter", file: "add_pr_number_reservations.sql" },
-  { table: "attachment", column: "file_name", file: "add_attachment_file_name.sql" },
-  { table: "pr", column: "budget_code", file: "add_pr_budget_code.sql" },
-  { table: "pr", column: "main_group", file: "add_pr_detail_columns.sql" },
-  { table: "pr", column: "approval_round", file: "add_approval_rounds.sql" },
-];
 
 // Budget Description the form fills in when a budget code is picked (frontend/src/formOptions.ts).
 const BUDGET_DESCRIPTION: Record<string, string> = {
@@ -236,22 +230,6 @@ const DEMO: DemoPr[] = [
 
 function at(value: string): Date {
   return new Date(`${value.replace(" ", "T")}:00+07:00`);
-}
-
-// Apply the migrations under database/ that this database has not had yet.
-async function applyMissingMigrations(): Promise<void> {
-  for (const migration of MIGRATIONS) {
-    const [rows] = "column" in migration
-      ? await pool.query<RowDataPacket[]>(`SHOW COLUMNS FROM ${migration.table} LIKE ?`, [migration.column])
-      : await pool.query<RowDataPacket[]>("SHOW TABLES LIKE ?", [migration.table]);
-    if (rows.length) continue;
-    console.log(`Applying database/${migration.file} ...`);
-    const statements = fs.readFileSync(path.resolve(__dirname, "../../database", migration.file), "utf8")
-      .split(";")
-      .map((statement) => statement.replace(/^\s*--.*$/gm, "").trim())
-      .filter((statement) => statement && !/^USE\s/i.test(statement));
-    for (const statement of statements) await pool.query(statement);
-  }
 }
 
 async function resetPrData(): Promise<void> {
